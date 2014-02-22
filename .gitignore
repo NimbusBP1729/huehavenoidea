@@ -1,2 +1,5 @@
 android/libs
 target/
+.classpath
+.project
+.settings
