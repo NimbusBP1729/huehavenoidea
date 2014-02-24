@@ -15,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -26,6 +26,7 @@ import com.jimbusgames.core.HueHaveNoIdea;
 public class GameplayScreen implements Screen {
 
 	protected static final float MAX_ERROR = 1;
+	private static final Color SETTING_COLOR = new Color(0, 0, 0, 0.5f);
 	private SpriteBatch batch;
 	private OrthographicCamera cam;
 	private float goalColor = 0.7f;
@@ -64,10 +65,10 @@ public class GameplayScreen implements Screen {
 
 		
 		stage = new Stage(cam.viewportWidth, cam.viewportHeight, true);
-		stage.addListener(new ClickListener(){
+		stage.addListener(new InputListener(){
 
 			@Override
-			public void clicked (InputEvent event, float x, float y) {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if(stopped){
 					stopped = false;
 					error += calculateDiff();
@@ -89,17 +90,19 @@ public class GameplayScreen implements Screen {
 				}else{
 					stopped = true;
 				}
+				return true;
 			}
 
 			private void failure() {
 				gameOver = true;
-				stage.addListener(new ClickListener(){
+				stage.addListener(new InputListener(){
 					@Override
-					public void clicked (InputEvent event, float x, float y) {
+					public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 						gameOver = false;
 						stopped = false;
 						stage.removeListener(this);
 						reset();
+						return true;
 					}
 				});
 			}
@@ -117,6 +120,8 @@ public class GameplayScreen implements Screen {
 	public void render(float delta) {
 		//updates
 		//cam.update(true);
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
 		if (!stopped) {
 			if (currentColor <= 0) {
 				doIncrement = true;
@@ -141,7 +146,7 @@ public class GameplayScreen implements Screen {
 		batch.setColor(Color.WHITE);
 		batch.draw(Assets.loadTexture("background.png"), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		batch.setColor(0, 0, 0, 0.5f);
+		batch.setColor(SETTING_COLOR);
 		TextureRegion setting = Assets.loadTexture("white.png");
 		int settingW = 3*Math.min(SCREEN_WIDTH, SCREEN_HEIGHT)/6;
 		int settingH = SCREEN_HEIGHT/2;
