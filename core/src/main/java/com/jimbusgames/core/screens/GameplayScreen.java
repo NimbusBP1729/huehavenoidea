@@ -64,6 +64,7 @@ public class GameplayScreen implements Screen {
 			JsonValue highScoreVal = new JsonReader().parse(jsonFile);
 			highestLevel = Long.valueOf(highScoreVal.getLong("longValue"));
 		}catch(Exception e){
+			Gdx.app.error(this.getClass().getCanonicalName(), e.getMessage());
 		}
 
 		
@@ -85,6 +86,7 @@ public class GameplayScreen implements Screen {
 							type.setName("high_score");
 							jsonFile.writeString(json.prettyPrint(type), false);
 						} catch (Exception e) {
+							Gdx.app.error(this.getClass().getCanonicalName(), e.getMessage());
 						}
 					}
 					if(error >= MAX_ERROR){
@@ -199,14 +201,20 @@ public class GameplayScreen implements Screen {
 	}
 
 	private String message(float value) {
-		if(value>0.9){
+		if(value>0.8){
 			return "You're the worst";
 		}else if(value > 0.6){
 			return "C'mon...";
 		}else if(value > 0.3){
 			return "You can do better";
-		}else{
+		}else if(value > 0.1){
 			return "Looking good";
+		}else if(value > 0.05){
+			return "Amazing";
+		}else if(value > 0.03){
+			return "Remarkable";
+		}else{
+			return "Wow!";
 		}
 	}
 
