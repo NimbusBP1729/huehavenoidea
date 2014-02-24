@@ -183,7 +183,12 @@ public class GameplayScreen implements Screen {
 		batch.draw(good, 0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
 		batch.setColor(Color.RED);
 		batch.draw(bad,  0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, Math.min(error,1)*SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
-
+		if(error > 0.75f){
+			font.setColor(Color.RED);
+			font.draw(batch, "!", 0.83f*SCREEN_WIDTH, 0.96f*SCREEN_HEIGHT);
+			font.setColor(Color.BLUE);
+		}
+		
 		if(stopped){
 			float value = calculateDiff();
 			String diff = myFormatter.format(value);
