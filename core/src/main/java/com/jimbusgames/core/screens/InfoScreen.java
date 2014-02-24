@@ -8,6 +8,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,12 +20,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jimbusgames.core.Assets;
 import com.jimbusgames.core.HueHaveNoIdea;
 
-public class StartScreen implements Screen {
+public class InfoScreen implements Screen {
 	Stage stage;
 	private SpriteBatch batch = new SpriteBatch();
+	private BitmapFont font;
 	private OrthographicCamera cam;
 	
-	public StartScreen(final HueHaveNoIdea game){
+	public InfoScreen(final HueHaveNoIdea game){
 		batch = new SpriteBatch();
 		cam = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
 		cam.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -31,33 +34,24 @@ public class StartScreen implements Screen {
 		cam.update(true);
 		batch.setProjectionMatrix(cam.combined);
 		
-		stage = new Stage();
+		font = Assets.getFont("aharoni");
 
+		stage = new Stage();
 
 		Skin skin = game.getSkin();
 		
-		TextButton startButton = new TextButton("START", skin);
+		TextButton startButton = new TextButton("BACK", skin);
 		startButton.addListener(new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
-				game.setScreen(new GameplayScreen(game));
-			}
-		});
-		
-		TextButton infoButton = new TextButton("HOW TO", skin);
-		infoButton.addListener(new ClickListener(){
-			@Override
-			public void clicked (InputEvent event, float x, float y) {
-				game.setScreen(new InfoScreen(game));
+				game.setScreen(new StartScreen(game));
 			}
 		});
 		
 		Table table = new Table();
 		//table.debug();
         table.setFillParent(true);
-		table.add(startButton).padBottom(SCREEN_HEIGHT/100);
-		table.row();
-		table.add(infoButton);
+		table.add(startButton);
 		
 		stage.addActor(table);
 	}
@@ -73,6 +67,10 @@ public class StartScreen implements Screen {
 		batch.begin();
 		batch.setColor(Color.WHITE);
 		batch.draw(Assets.loadTexture("background.png"), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		font.setColor(Color.BLUE);
+		font.drawWrapped(batch, "Click the screen when the big square is the same color as the little square"
+				, 0, 0.4f*SCREEN_HEIGHT, SCREEN_WIDTH, HAlignment.CENTER);
+		
 		batch.end();
 
 
