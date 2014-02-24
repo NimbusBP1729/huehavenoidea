@@ -36,7 +36,7 @@ public class InfoScreen implements Screen {
 		
 		font = Assets.getFont("aharoni");
 
-		stage = new Stage();
+		stage = new Stage(SCREEN_WIDTH, SCREEN_HEIGHT, true);
 
 		Skin skin = game.getSkin();
 		

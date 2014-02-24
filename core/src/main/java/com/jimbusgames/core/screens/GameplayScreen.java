@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.jimbusgames.core.Assets;
 import com.jimbusgames.core.HueHaveNoIdea;
 
@@ -65,7 +66,7 @@ public class GameplayScreen implements Screen {
 			JsonValue highScoreVal = new JsonReader().parse(jsonFile);
 			highestLevel = Long.valueOf(highScoreVal.getLong("longValue"));
 		}catch(Exception e){
-			Gdx.app.error(this.getClass().getCanonicalName(), e.getMessage());
+			Gdx.app.error(ClassReflection.getSimpleName(getClass()), e.getMessage());
 		}
 
 		
@@ -86,7 +87,7 @@ public class GameplayScreen implements Screen {
 							type.setName("high_score");
 							jsonFile.writeString(json.prettyPrint(type), false);
 						} catch (Exception e) {
-							Gdx.app.error(this.getClass().getCanonicalName(), e.getMessage());
+							Gdx.app.error(ClassReflection.getSimpleName(getClass()), e.getMessage());
 						}
 					}
 					if(error >= MAX_ERROR){
@@ -174,7 +175,7 @@ public class GameplayScreen implements Screen {
 
 		font.setColor(Color.BLUE);
 		font.drawMultiLine(batch, "Level: "+level+"\n"+
-				"Error: "+ myFormatter.format(error)+"\n"+
+				"Error: "+ myFormatter.format(error)+" of "+MAX_ERROR+"\n"+
 				"Highest Level: "+ highestLevel+"\n"
 				, 0, SCREEN_HEIGHT, SCREEN_WIDTH, HAlignment.LEFT);
 		
@@ -183,7 +184,7 @@ public class GameplayScreen implements Screen {
 		batch.setColor(Color.BLUE);
 		batch.draw(good, 0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
 		batch.setColor(Color.RED);
-		batch.draw(bad,  0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, Math.min(error,1)*SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
+		batch.draw(bad,  0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, Math.min(error/MAX_ERROR,1)*SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
 		if(error > 0.75f){
 			font.setColor(Color.RED);
 			font.draw(batch, "!", 0.83f*SCREEN_WIDTH, 0.96f*SCREEN_HEIGHT);

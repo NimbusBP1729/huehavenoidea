@@ -31,7 +31,7 @@ public class StartScreen implements Screen {
 		cam.update(true);
 		batch.setProjectionMatrix(cam.combined);
 		
-		stage = new Stage();
+		stage = new Stage(SCREEN_WIDTH, SCREEN_HEIGHT, true);
 
 
 		Skin skin = game.getSkin();
