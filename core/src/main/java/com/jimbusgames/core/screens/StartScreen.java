@@ -51,7 +51,7 @@ public class StartScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.setColor(Color.WHITE);
-		batch.draw(Assets.loadTexture("background.png"), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		batch.draw(Assets.loadTexture("background.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
 
 
