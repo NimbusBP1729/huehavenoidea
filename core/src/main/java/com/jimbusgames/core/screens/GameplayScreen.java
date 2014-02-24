@@ -75,7 +75,6 @@ public class GameplayScreen implements Screen {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if(stopped){
 					stopped = false;
-					error += calculateDiff();
 					level++;
 					currentColor = MathUtils.random();
 					goalColor = MathUtils.random();
@@ -94,6 +93,7 @@ public class GameplayScreen implements Screen {
 					}
 				}else{
 					stopped = true;
+					error += calculateDiff();
 				}
 				return true;
 			}
