@@ -3,6 +3,8 @@ package com.jimbusgames.core.screens;
 import static com.jimbusgames.core.HueHaveNoIdea.SCREEN_HEIGHT;
 import static com.jimbusgames.core.HueHaveNoIdea.SCREEN_WIDTH;
 
+import java.text.DecimalFormat;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -42,6 +44,7 @@ public class GameplayScreen implements Screen {
 	private Json json;
 	private FileHandle jsonFile;
 	private boolean gameOver = false;
+	private DecimalFormat myFormatter;
 
 	public GameplayScreen(HueHaveNoIdea game) {
 		batch = new SpriteBatch();
@@ -102,13 +105,15 @@ public class GameplayScreen implements Screen {
 						stopped = false;
 						stage.removeListener(this);
 						reset();
-						return true;
+						return	 true;
 					}
 				});
 			}
 		});
 				
 		currentColor = MathUtils.random();
+		myFormatter = new DecimalFormat("0.0000");
+
 	}
 	
 	public void reset(){
@@ -166,7 +171,7 @@ public class GameplayScreen implements Screen {
 
 		font.setColor(Color.BLUE);
 		font.drawMultiLine(batch, "Level: "+level+"\n"+
-				"Error: "+ error+"\n"+
+				"Error: "+ myFormatter.format(error)+"\n"+
 				"Highest Level: "+ highestLevel+"\n"
 				, 0, SCREEN_HEIGHT, SCREEN_WIDTH, HAlignment.LEFT);
 		
@@ -178,9 +183,10 @@ public class GameplayScreen implements Screen {
 		batch.draw(bad,  0.70f*SCREEN_WIDTH, 0.95f*SCREEN_HEIGHT, Math.min(error,1)*SCREEN_WIDTH/4,SCREEN_HEIGHT/100);
 
 		if(stopped){
-			float diff = calculateDiff();
-			font.drawMultiLine(batch, "Click to advance", 0, 6.5f*SCREEN_HEIGHT/8,SCREEN_WIDTH,HAlignment.CENTER);
-			font.drawMultiLine(batch, "Hmmm..."+diff, 0, 3*SCREEN_HEIGHT/4,SCREEN_WIDTH,HAlignment.CENTER);
+			float value = calculateDiff();
+			String diff = myFormatter.format(value);
+			font.drawMultiLine(batch, "Click to advance", 0, 0.8f*SCREEN_HEIGHT,SCREEN_WIDTH,HAlignment.CENTER);
+			font.drawMultiLine(batch, message(value)+"\n"+diff, 0, 0.72f*SCREEN_HEIGHT,SCREEN_WIDTH,HAlignment.CENTER);
 		}
 		
 		if(gameOver){
@@ -190,6 +196,18 @@ public class GameplayScreen implements Screen {
 		batch.setColor(Color.WHITE);
 		batch.end();
 
+	}
+
+	private String message(float value) {
+		if(value>0.9){
+			return "You're the worst";
+		}else if(value > 0.6){
+			return "C'mon...";
+		}else if(value > 0.3){
+			return "You can do better";
+		}else{
+			return "Looking good";
+		}
 	}
 
 	private float calculateDiff() {
