@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
+import com.jimbusgames.core.Assets;
 import com.jimbusgames.core.HueHaveNoIdea;
 
 public class GameplayScreen implements Screen {

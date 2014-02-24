@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.jimbusgames.core.screens.Assets;
 import com.jimbusgames.core.screens.StartScreen;
 
 public class HueHaveNoIdea extends Game {
