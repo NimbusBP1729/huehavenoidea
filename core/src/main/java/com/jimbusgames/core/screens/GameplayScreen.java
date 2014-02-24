@@ -219,8 +219,10 @@ public class GameplayScreen implements Screen {
 			return "Amazing";
 		}else if(value > 0.03){
 			return "Remarkable";
-		}else{
+		}else if(value > 0.003){
 			return "Wow!";
+		}else{
+			return "Inconceivable!";
 		}
 	}
 

@@ -52,9 +52,12 @@ public class StartScreen implements Screen {
 			}
 		});
 		
-		Table table = new Table();
+		Table table = new Table(game.getSkin());
 		//table.debug();
         table.setFillParent(true);
+		table.add("Hue Have\n No Idea","title",Color.BLUE).padBottom(SCREEN_HEIGHT/100);
+		table.row();
+		
 		table.add(startButton).padBottom(SCREEN_HEIGHT/100);
 		table.row();
 		table.add(infoButton);
