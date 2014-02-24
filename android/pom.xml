@@ -54,6 +54,12 @@
 			<version>${android.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.admob.android</groupId>
+			<artifactId>ads</artifactId>
+			<version>6.4.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
