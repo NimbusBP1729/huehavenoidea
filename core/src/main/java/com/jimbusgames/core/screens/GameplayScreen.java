@@ -78,8 +78,8 @@ public class GameplayScreen implements Screen {
 				if(stopped){
 					stopped = false;
 					level++;
-					currentColor = MathUtils.random();
-					goalColor = MathUtils.random();
+					currentColor = pickColor();
+					goalColor = pickColor();
 					if (level > highestLevel) {
 						highestLevel = level;
 						try {
@@ -115,11 +115,17 @@ public class GameplayScreen implements Screen {
 			}
 		});
 				
-		currentColor = MathUtils.random();
-		myFormatter = new DecimalFormat("0.0000");
+		currentColor = pickColor();
+		myFormatter = new DecimalFormat("0.00");
 
 	}
-	
+
+	//rounds to two decimals so color can be guessed perfectly
+	//see eps
+	private float pickColor() {
+		return Math.round(MathUtils.random()*100)/100.0f;
+	}
+
 	public void reset(){
 		this.level = 1;
 		this.error = 0;
@@ -143,8 +149,6 @@ public class GameplayScreen implements Screen {
 			} else {
 				currentColor -= eps;
 			}
-
-			currentColor = MathUtils.clamp(currentColor, 0, 1);
 		}
 		
 		//drawing
@@ -161,7 +165,7 @@ public class GameplayScreen implements Screen {
 		int settingH = SCREEN_HEIGHT/2;
 		batch.draw(setting, SCREEN_WIDTH/2-settingW/2, SCREEN_HEIGHT/6, settingW, settingH);
 		
-		batch.setColor(0, 0, currentColor, 1);
+		batch.setColor(0, 0, MathUtils.clamp(currentColor, 0, 1), 1);
 		TextureRegion current = Assets.loadTexture("white.png");
 		int currentW = Math.min(SCREEN_WIDTH, SCREEN_HEIGHT)/4;
 		int currentH = currentW;
@@ -175,7 +179,7 @@ public class GameplayScreen implements Screen {
 
 		font.setColor(Color.BLUE);
 		font.drawMultiLine(batch, "Level: "+level+"\n"+
-				"Error: "+ myFormatter.format(error)+" of "+MAX_ERROR+"\n"+
+				"Error: "+ myFormatter.format(error)+" of "+myFormatter.format(MAX_ERROR)+"\n"+
 				"Highest Level: "+ highestLevel+"\n"
 				, 0, SCREEN_HEIGHT, SCREEN_WIDTH, HAlignment.LEFT);
 		
@@ -220,7 +224,7 @@ public class GameplayScreen implements Screen {
 			return "Amazing";
 		}else if(value > 0.03){
 			return "Remarkable";
-		}else if(value > 0.003){
+		}else if(value > 0.01){
 			return "Wow!";
 		}else{
 			return "Inconceivable!";
